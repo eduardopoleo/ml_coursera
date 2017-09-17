@@ -29,6 +29,7 @@ clear ; close all; clc
 %% ==================== Part 1: Basic Function ====================
 % Complete warmUpExercise.m
 fprintf('Running warmUpExercise ... \n');
+% Prints to the console
 fprintf('5x5 Identity Matrix: \n');
 warmUpExercise()
 
@@ -40,6 +41,7 @@ pause;
 fprintf('Plotting Data ...\n')
 data = load('ex1data1.txt');
 X = data(:, 1); y = data(:, 2);
+
 m = length(y); % number of training examples
 
 % Plot Data
@@ -51,8 +53,8 @@ pause;
 
 %% =================== Part 3: Cost and Gradient descent ===================
 
-X = [ones(m, 1), data(:,1)]; % Add a column of ones to x
-theta = zeros(2, 1); % initialize fitting parameters
+X = [ones(m, 1), data(:,1)]; % Add a column of ones to x []
+theta = zeros(2, 1); % initialize fitting parameters % [0; 0]
 
 % Some gradient descent settings
 iterations = 1500;
