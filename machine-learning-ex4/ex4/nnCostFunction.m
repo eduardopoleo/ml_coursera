@@ -44,59 +44,30 @@ Theta2_grad = zeros(size(Theta2));
 % size(y) => 5000 x 1
 
 
-X = [ones(m,1) X]; % 5000 x 401
 y_matrix = eye(num_labels)(y,:); % 5000 x 10
+a1 = [ones(m,1) X]; % 5000 x 401
+z2 = a1 * Theta1';
+a2 = sigmoid(z2); % 5000 x 25
+a2 = [ones(m, 1) a2]; % 5000 x 26
 
-theta1 = Theta1'; % 401 X 25
+z3 = a2 * Theta2'; % 5000 x 10
+a3 = sigmoid(z3); % 5000 x 10
 
-%       feature1 feature2 feature3 feature4
-% exp1
+J = (sum(sum(-y_matrix .* log(a3) - (1 - y_matrix) .* log(1 - a3), 2))) / m;
+
+reg_term1 = sum((Theta1(:, 2:end).^ 2)(:));
+reg_term2 = sum((Theta2(:, 2:end).^ 2)(:));
+
+reg_term = lambda / (2 * m) * (reg_term1 + reg_term2);
+
+J = J + reg_term;
 
 
-%          node1 | node2 | node3 | node4
-% feature1
-% feature2
-% feature3
-% feature4
 
 
 
-theta2 = Theta2'; % 26 X 10
-acc = [];
-for i = 1:m
-  z1 = X(i, :) * theta1; % 1 X 25
-  g1 = sigmoid(z1);
 
-  g1 = [1 g1]; % 1 X 26
 
-  z2 = g1 * theta2; % 1 X 10
-  h = sigmoid(z2); % 1 X 10
-
-  yi = y_matrix(i, :); % 1 x 10
-
-  err = log(h) * yi' + log(1 - h) * (1 - yi');
-
-  acc = [acc err];
-end
-
-non_reg = - (1/m) * sum(acc);
-
-theta1 = Theta1(:,2:end);
-theta2 = Theta2(:,2:end);
-
-reg_factor1 = sum((theta1 .^ 2)(:));
-reg_factor2 = sum((theta2 .^ 2)(:));
-
-reg_factor = lambda / (2 * m) * (reg_factor1 + reg_factor2);
-
-J = non_reg + reg_factor;
-
-%
-% Part 1: Feedforward the neural network and return the cost in the
-%         variable J. After implementing Part 1, you can verify that your
-%         cost function computation is correct by verifying the cost
-%         computed in ex4.m
-%
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
 %         the cost function with respect to Theta1 and Theta2 in Theta1_grad and
