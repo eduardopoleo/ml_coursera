@@ -79,9 +79,17 @@ for i = 1:m
   acc = [acc err];
 end
 
-J = - (1/m) * sum(acc)
-% %
-% end
+non_reg = - (1/m) * sum(acc);
+
+theta1 = Theta1(:,2:end);
+theta2 = Theta2(:,2:end);
+
+reg_factor1 = sum((theta1 .^ 2)(:));
+reg_factor2 = sum((theta2 .^ 2)(:));
+
+reg_factor = lambda / (2 * m) * (reg_factor1 + reg_factor2);
+
+J = non_reg + reg_factor;
 
 %
 % Part 1: Feedforward the neural network and return the cost in the
