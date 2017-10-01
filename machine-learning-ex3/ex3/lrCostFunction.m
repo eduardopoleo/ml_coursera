@@ -1,5 +1,5 @@
 function [J, grad] = lrCostFunction(theta, X, y, lambda)
-m = length(y); 
+m = length(y);
 
 J = 0;
 grad = zeros(size(theta));
@@ -16,7 +16,7 @@ reg_factor = (lambda / m) * theta;
 reg_factor(1) = 0; % you're not supposed to regularized theta(0)
 
 % grad is expected to be a column vector it's just like theta is.
-% other wise other functions will not work
+% otherwise the advance optimization function will not work
 grad = non_reg_grad + reg_factor;
 
 end

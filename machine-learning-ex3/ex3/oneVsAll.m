@@ -41,6 +41,8 @@ for c = 1:num_labels;
   % p 1 |   t1   |  t2     |  t3
   % p 2 |   t1   |  t2     |  t3
   % p 3 |   t1   |  t2     |  t3
+  % ...
+  % ... where p is a bunch of features 
 end
 
 all_theta = theta_init';
