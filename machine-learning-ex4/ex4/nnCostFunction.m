@@ -45,24 +45,37 @@ Theta2_grad = zeros(size(Theta2));
 
 
 y_matrix = eye(num_labels)(y,:); % 5000 x 10
+
+% COST CALCULATION by forward propagation
+
 a1 = [ones(m,1) X]; % 5000 x 401
-z2 = a1 * Theta1';
+z2 = a1 * Theta1'; % 5000 x 25
 a2 = sigmoid(z2); % 5000 x 25
 a2 = [ones(m, 1) a2]; % 5000 x 26
 
 z3 = a2 * Theta2'; % 5000 x 10
 a3 = sigmoid(z3); % 5000 x 10
-
 J = (sum(sum(-y_matrix .* log(a3) - (1 - y_matrix) .* log(1 - a3), 2))) / m;
 
+% Regularization terms
 reg_term1 = sum((Theta1(:, 2:end).^ 2)(:));
 reg_term2 = sum((Theta2(:, 2:end).^ 2)(:));
-
 reg_term = lambda / (2 * m) * (reg_term1 + reg_term2);
-
 J = J + reg_term;
 
+% backpropagation
+d3 = a3 - y_matrix; % => 5000 x 10
+d2 = (d3 * Theta2(:, 2:end)) .* sigmoidGradient(z2); % 5000 x 25
 
+D1 = d2' * a1;  % 25 x 401
+D2 = d3' * a2;  % 10 x 26
+
+Theta1_grad = Theta1_grad + (1/m) * D1;
+Theta2_grad = Theta2_grad + (1/m) * D2;
+
+% you never regularized the bias term
+Theta1_grad(:, 2:end) = Theta1_grad(:, 2:end) + (lambda / m) * Theta1(:, 2:end);
+Theta2_grad(:, 2:end) = Theta2_grad(:, 2:end) + (lambda / m) * Theta2(:, 2:end);
 
 
 
