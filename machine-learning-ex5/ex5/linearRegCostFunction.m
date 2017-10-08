@@ -29,14 +29,6 @@ reg_factor = reg_factor';
 
 grad =  non_reg_grad + reg_factor;
 
-
-
-
-
-
-
-% =========================================================================
-
 grad = grad(:);
 
 end
